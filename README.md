@@ -196,7 +196,7 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 | 18 | TNPH-RUR-PFS01 | pfSense CE | Remote Clinic |
 | 19 | TNPH-RUR-ASW01 | Cisco IOSvL2 | Remote Clinic |
 | 20 | RUR-MedApp2 | VPCS | Remote Clinic |
-| 21 | RUR-Kali | Kali Linux Light | Remote Clinic |
+| 21 | RUR-Kali | Kali Linux | Remote Clinic |
 
 ---
 
