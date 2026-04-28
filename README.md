@@ -154,12 +154,12 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 
 ### Servers and Monitoring
 
-- Windows Server 2019
+- Windows Server 2022
 - Active Directory
 - DNS
 - DHCP
 - SQL Server
-- Ubuntu Server 22.04
+- Ubuntu Server 24.04
 - Docker
 - Wazuh
 - Splunk Enterprise
