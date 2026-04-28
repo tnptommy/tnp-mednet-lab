@@ -1,4 +1,4 @@
-# TNP MedNet — Enterprise Healthcare Network Lab
+# 🏥 TNP MedNet — Enterprise Healthcare Network Lab
 
 ## Project Overview
 
@@ -180,9 +180,9 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 | 2 | TNPH-DC-SOPH01 | Sophos XG/SFOS | Data Centre |
 | 3 | TNPH-DC-CSW01 | Cisco IOSvL2 | Data Centre |
 | 4 | TNPH-DC-CSW02 | Cisco IOSvL2 | Data Centre |
-| 5 | TNPH-DC-AD01 | Windows Server 2019 | Data Centre |
-| 6 | TNPH-DC-SQL01 | Windows Server 2019 | Data Centre |
-| 7 | TNPH-DC-MON01 | Ubuntu 22.04 + Docker | Data Centre |
+| 5 | TNPH-DC-AD01 | Windows Server 2022 | Data Centre |
+| 6 | TNPH-DC-SQL01 | Windows Server 2022 | Data Centre |
+| 7 | TNPH-DC-MON01 | Ubuntu 24.04 + Docker | Data Centre |
 | 8 | PE-Router-L | Cisco IOSv | MPLS |
 | 9 | P-Router | Cisco IOSv | MPLS |
 | 10 | PE-Router-R | Cisco IOSv | MPLS |
@@ -361,7 +361,7 @@ The monitoring stack runs on **TNPH-DC-MON01**.
 
 | Item | Details |
 |---|---|
-| OS | Ubuntu Server 22.04 |
+| OS | Ubuntu Server 24.04 |
 | IP Address | 10.1.100.10/24 |
 | Default Gateway | 10.1.100.1 |
 | RAM | 6–8 GB |
