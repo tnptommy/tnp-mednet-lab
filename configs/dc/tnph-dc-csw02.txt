@@ -1,0 +1,195 @@
+configure terminal
+
+hostname TNPH-DC-CSW02
+no ip domain lookup
+ip domain name tnpmednet.local
+service password-encryption
+service timestamps debug datetime msec
+service timestamps log datetime msec
+
+enable secret Mednettnp@2026
+username admin privilege 15 secret Mednettnp@2026
+
+vlan 99
+ name DC_SERVERS
+
+vlan 100
+ name DC_SIEM
+
+vlan 999
+ name NATIVE
+
+ip routing
+
+interface Loopback0
+ description ROUTER_ID
+ ip address 1.1.1.2 255.255.255.255
+
+interface GigabitEthernet0/0
+ description LINK_TO_SOPHOS_PortD
+ no switchport
+ ip address 10.1.1.6 255.255.255.252
+ no shutdown
+
+interface GigabitEthernet0/1
+ description CROSSLINK_TO_CSW01_Gi0/1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 99,100
+ switchport mode trunk
+ channel-group 1 mode active
+ no shutdown
+
+interface GigabitEthernet0/2
+ description CROSSLINK_TO_CSW01_Gi0/2
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 99,100
+ switchport mode trunk
+ channel-group 1 mode active
+ no shutdown
+
+interface Port-channel1
+ description ETHERCHANNEL_TO_CSW01
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 99,100
+ switchport mode trunk
+
+interface GigabitEthernet0/3
+ description LINK_TO_PE-ROUTER-R_Gi0/3
+ no switchport
+ ip address 10.0.5.2 255.255.255.252
+ no shutdown
+
+interface GigabitEthernet1/0
+ description UNUSED
+ shutdown
+
+interface GigabitEthernet1/1
+ description LINK_TO_TNPH-DC-AD01_BACKUP
+ switchport mode access
+ switchport access vlan 99
+ spanning-tree portfast edge
+ no shutdown
+
+interface GigabitEthernet1/2
+ description LINK_TO_TNPH-DC-SQL01_BACKUP
+ switchport mode access
+ switchport access vlan 99
+ spanning-tree portfast edge
+ no shutdown
+
+interface GigabitEthernet1/3
+ description LINK_TO_TNPH-DC-MON01_BACKUP
+ switchport mode access
+ switchport access vlan 100
+ spanning-tree portfast edge
+ no shutdown
+
+interface range GigabitEthernet2/0 - 3
+ description UNUSED
+ shutdown
+
+interface range GigabitEthernet3/0 - 3
+ description UNUSED
+ shutdown
+
+interface Vlan99
+ description SVI_DC_SERVERS
+ ip address 10.1.99.3 255.255.255.0
+ standby version 2
+ standby 99 ip 10.1.99.1
+ standby 99 priority 100
+ standby 99 preempt
+ standby 99 authentication md5 key-string Mednettnp@2026
+ standby 99 timers msec 200 msec 750
+ no shutdown
+
+interface Vlan100
+ description SVI_DC_SIEM
+ ip address 10.1.100.3 255.255.255.0
+ standby version 2
+ standby 100 ip 10.1.100.1
+ standby 100 priority 100
+ standby 100 preempt
+ standby 100 authentication md5 key-string Mednettnp@2026
+ standby 100 timers msec 200 msec 750
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 10.1.1.5
+
+router bgp 65001
+ bgp router-id 1.1.1.2
+ bgp log-neighbor-changes
+ no synchronization
+ no auto-summary
+ neighbor 10.0.5.1 remote-as 65002
+ neighbor 10.0.5.1 description PE-Router-R_Viettel
+ neighbor 10.0.5.1 password Mednettnp@2026
+ network 10.1.99.0 mask 255.255.255.0
+ network 10.1.100.0 mask 255.255.255.0
+ network 1.1.1.2 mask 255.255.255.255
+
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 99,100 priority 8192
+
+no ip http server
+no ip http secure-server
+no service finger
+no service pad
+no service tcp-small-servers
+no service udp-small-servers
+no ip bootp server
+no cdp run
+
+logging buffered 16384 informational
+logging console critical
+
+ip access-list standard MGMT-ACL
+ permit 10.1.99.0 0.0.0.255
+ permit 10.1.100.0 0.0.0.255
+ permit 10.1.1.4 0.0.0.3
+ deny   any log
+
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+crypto key generate rsa modulus 2048
+
+line console 0
+ password Mednettnp@2026
+ login
+ logging synchronous
+ exec-timeout 10 0
+
+line aux 0
+ no exec
+ transport input none
+
+line vty 0 4
+ access-class MGMT-ACL in
+ login local
+ transport input ssh
+ exec-timeout 10 0
+
+line vty 5 15
+ access-class MGMT-ACL in
+ login local
+ transport input ssh
+ exec-timeout 10 0
+
+banner motd ^
+===================================================
+  TNPH-DC-CSW02 — TNP MedNet DC Core Switch Secondary
+  HSRP Standby + Backup CE Router
+  AUTHORISED ACCESS ONLY
+===================================================
+^
+
+ntp server 10.1.99.10
+clock timezone ICT 7 0
+
+end
+write memory
