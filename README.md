@@ -1,13 +1,12 @@
-cat > README.md <<'EOF'
-# 🏥 TNP MedNet — Enterprise Healthcare Network Lab
+# TNP MedNet — Enterprise Healthcare Network Lab
 
 ## Project Overview
 
 **TNP MedNet** is a production-style enterprise healthcare network lab built in **EVE-NG** on **VMware Workstation**. The lab simulates a multi-site healthcare organisation based in **Ho Chi Minh City, Vietnam**, with a central data centre, metro hospital, remote community clinic, MPLS provider core, enterprise firewalls, Windows Server infrastructure, branch segmentation, and a Docker-based monitoring stack.
 
-The project is designed to demonstrate practical skills in enterprise networking, infrastructure, cybersecurity, monitoring, business analysis, and technical documentation.
+This project is designed to demonstrate practical skills across enterprise networking, infrastructure, cybersecurity, cloud integration, monitoring, business analysis, and technical documentation.
 
-The lab focuses on a realistic healthcare environment where clinical access, network availability, secure routing, firewall segmentation, and security visibility are critical.
+The lab focuses on a realistic healthcare environment where clinical system availability, secure WAN connectivity, network segmentation, operational monitoring, and incident response are critical.
 
 ---
 
@@ -29,7 +28,7 @@ The lab focuses on a realistic healthcare environment where clinical access, net
 
 ## Organisation Profile
 
-**TNP MedNet Pty Ltd** is a simulated healthcare organisation operating in Ho Chi Minh City. The organisation provides clinical services across a central data centre, a metro hospital, and an outer-area community healthcare branch.
+**TNP MedNet Pty Ltd** is a simulated healthcare organisation operating in Ho Chi Minh City. The organisation provides clinical, administrative, and telehealth services across a central data centre, a metro hospital, and an outer-area community healthcare branch.
 
 | Area | Details |
 |---|---|
@@ -39,7 +38,7 @@ The lab focuses on a realistic healthcare environment where clinical access, net
 | Clinical Staff | 180 |
 | Administrative Staff | 70 |
 | Main Sites | Data Centre, Metro Hospital, Remote Community Clinic |
-| Strategic Focus | Reliable clinical access, secure connectivity, monitoring, and future cloud integration |
+| Strategic Focus | Reliable clinical access, secure connectivity, monitoring, compliance, and future cloud integration |
 
 ---
 
@@ -47,11 +46,11 @@ The lab focuses on a realistic healthcare environment where clinical access, net
 
 | Site | Location | Purpose |
 |---|---|---|
-| Data Centre | Chánh Hưng Ward, Ho Chi Minh City | Core infrastructure, servers, firewall, SIEM, and central network services |
-| Metro Hospital | Bến Thành Ward, Ho Chi Minh City | Main clinical and administrative hospital site |
-| Remote Community Clinic | Long Phước Ward, Ho Chi Minh City | Outer-area healthcare site used to simulate rural-style connectivity and remote clinical access |
+| Data Centre | Chanh Hung Ward, Ho Chi Minh City | Core infrastructure, servers, firewall, SIEM, and central network services |
+| Metro Hospital | Ben Thanh Ward, Ho Chi Minh City | Main clinical and administrative hospital site |
+| Remote Community Clinic | Long Phuoc Ward, Ho Chi Minh City | Outer-area healthcare branch used to simulate rural-style connectivity and remote clinical access |
 
-The remote community clinic is used as a rural-style branch within the lab design. It represents a healthcare site that depends heavily on reliable WAN connectivity to access central systems, patient records, and monitoring services.
+The remote community clinic represents a healthcare site that depends heavily on stable WAN connectivity to access central patient systems, clinical applications, security monitoring, and support services.
 
 ---
 
@@ -59,9 +58,16 @@ The remote community clinic is used as a rural-style branch within the lab desig
 
 | Name | Role | Responsibility |
 |---|---|---|
-| Dr. Tony To | Chief Medical Officer and Executive Sponsor | Business approval, clinical outcomes, compliance, and budget ownership |
-| Tommy Huynh | Chief Technology Officer and Project Lead | Network architecture, cybersecurity design, vendor management, and implementation |
-| Misha Milanovic | IT Operations Manager | Daily operations, incident response, telco liaison, and operational sign-off |
+| Dr. Tony To | Co-founder, Chief Medical Officer, and Executive Sponsor | Clinical leadership, patient outcomes, compliance direction, business approval, and budget ownership |
+| Tommy Huynh | Co-founder, Chief Technology Officer, and Project Lead | Network architecture, cybersecurity design, infrastructure planning, vendor management, and implementation |
+| Peter Phan | Co-founder and Director of Risk, Safety, and Compliance | Risk oversight, safety governance, incident escalation, compliance awareness, and public safety alignment |
+| Misha Milanovic | IT Operations Manager | Day-to-day operations, incident response, telco liaison, runbook ownership, and operational sign-off |
+
+### Governance Note
+
+Peter Phan provides governance input from a public safety and law enforcement background. His role is focused on risk, safety, compliance, incident escalation, and coordination with external authorities during major operational or security incidents.
+
+He does not manage day-to-day network engineering tasks. His role helps ensure that technology decisions align with safety, accountability, incident response, and compliance expectations.
 
 ---
 
@@ -72,11 +78,12 @@ The main objectives of this project are to:
 1. Design a realistic enterprise healthcare network.
 2. Build a multi-site MPLS L3VPN architecture.
 3. Separate customer and provider routing using VRF and MP-BGP.
-4. Implement reliable data centre gateways using HSRP.
+4. Implement resilient data centre gateways using HSRP.
 5. Improve security through firewall placement and VLAN segmentation.
 6. Deploy monitoring using Wazuh and Splunk.
-7. Document the project using both technical and business analysis artefacts.
-8. Create a professional GitHub portfolio project for networking, infrastructure, cloud, and cybersecurity roles.
+7. Simulate security detection scenarios from an isolated attacker VLAN.
+8. Document the project using technical and business analysis artefacts.
+9. Create a professional GitHub portfolio project for networking, infrastructure, cloud, and cybersecurity roles.
 
 ---
 
@@ -86,8 +93,8 @@ The lab is divided into five major layers:
 
 | Layer | Description |
 |---|---|
-| Cloud Layer | Azure VPN Gateway, Azure VNet, and future cloud-hosted services |
-| Internet and ISP Layer | Internet uplink, NAT, and ISP edge routing |
+| Cloud Layer | Azure VPN Gateway, Azure VNet, and future cloud-hosted healthcare services |
+| Internet and ISP Layer | Internet uplink, NAT, ISP edge routing, and WAN handoff |
 | Data Centre Layer | Sophos firewall, redundant core switches, HSRP, servers, and monitoring |
 | MPLS Provider Core | PE and P routers running OSPF, MPLS LDP, and MP-BGP VPNv4 |
 | Branch Layer | Metro and remote clinic sites using CE routers, pfSense, access switches, and VLANs |
@@ -112,7 +119,7 @@ MPLS L3VPN Provider Core
 Metro Hospital and Remote Community Clinic
 ```
 
-The MPLS core provides private WAN connectivity between the data centre, metro hospital, and remote community clinic. The provider core uses a BGP-free core design, where the P router only performs label switching and does not carry customer routes.
+The MPLS core provides private WAN connectivity between the data centre, metro hospital, and remote community clinic. The provider core uses a BGP-free core design, where the P router performs label switching only and does not carry customer routes.
 
 ---
 
@@ -235,6 +242,25 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 | 10.1.100.1 | HSRP VIP for monitoring VLAN |
 | 10.1.100.10 | Monitoring server |
 
+### Customer Loopbacks
+
+| Device | Loopback |
+|---|---|
+| TNPH-DC-CSW01 | 1.1.1.1/32 |
+| TNPH-DC-CSW02 | 1.1.1.2/32 |
+| TNPH-MET-CE01 | 1.1.1.10/32 |
+| TNPH-RUR-CE01 | 1.1.1.20/32 |
+
+### Provider Loopbacks
+
+| Device | Loopback |
+|---|---|
+| PE-Router-L | 2.2.2.1/32 |
+| P-Router | 2.2.2.2/32 |
+| PE-Router-R | 2.2.2.3/32 |
+
+Provider loopbacks are not advertised to the customer network. This follows the BGP-free core principle.
+
 ### MPLS Core Links
 
 | Network | Purpose |
@@ -296,6 +322,14 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 | Peer 1 | Peer 2 | Purpose |
 |---|---|---|
 | PE-Router-L | PE-Router-R | VPNv4 route exchange for VRF TNPH |
+
+### Advertised Customer Networks
+
+| Site | Networks |
+|---|---|
+| Data Centre | 10.1.99.0/24, 10.1.100.0/24, 1.1.1.1/32, 1.1.1.2/32 |
+| Metro Hospital | 10.1.11.0/24, 10.1.20.0/24, 1.1.1.10/32 |
+| Remote Community Clinic | 10.1.31.0/24, 10.1.66.0/24, 1.1.1.20/32 |
 
 ---
 
@@ -784,4 +818,3 @@ Project focus:
 ## Disclaimer
 
 This is a simulated lab environment created for learning, demonstration, and portfolio purposes. It does not represent a live production healthcare network.
-EOF
