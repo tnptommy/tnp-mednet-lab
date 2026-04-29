@@ -818,3 +818,68 @@ Project focus:
 ## Disclaimer
 
 This is a simulated lab environment created for learning, demonstration, and portfolio purposes. It does not represent a live production healthcare network.
+
+---
+
+## Current Project Update
+
+### Completed
+
+The following major components have been completed in the current version of the TNP MedNet Lab:
+
+- MPLS L3VPN provider core design and routing verification
+- Data Centre core switching and WAN connectivity
+- CE-to-PE eBGP routing
+- MP-BGP VPNv4 between provider edge routers
+- VRF-based customer route separation
+- BGP-free provider core using MPLS label switching
+- Active Directory Domain Services deployment
+- DNS service configuration for the internal domain
+- Initial Windows Server infrastructure foundation
+- Azure foundation repository structure
+- Azure documentation folders for networking, monitoring, security, backup, governance, Azure Arc, and cost management
+- Azure Terraform, policy, monitoring, and script file structure
+
+### Active Directory Status
+
+Active Directory Domain Services has been completed as part of the TNP MedNet internal infrastructure layer. The AD environment provides the foundation for centralised identity management, domain-based authentication, DNS integration, and future Microsoft 365 / hybrid identity integration.
+
+This component supports the healthcare enterprise scenario by allowing users, computers, servers, and administrative access to be managed through a central Windows Server domain environment.
+
+### Azure Foundation Status
+
+The Azure foundation structure has been added to the repository to prepare the project for hybrid cloud expansion. This includes planned support for Azure networking, Azure Monitor, Log Analytics, Azure Arc, Azure Policy, Defender for Cloud, backup and disaster recovery, and MSP-style cloud operations.
+
+The Azure layer is designed to extend the on-premises TNP MedNet environment into a hybrid cloud architecture using a cost-controlled student Azure subscription.
+
+Planned Azure components include:
+
+- Azure Resource Group
+- Azure Hub Virtual Network
+- Azure Subnets
+- Network Security Groups
+- Route Tables
+- Log Analytics Workspace
+- Azure Monitor alerts
+- Azure Arc onboarding for on-premises servers
+- Azure Policy governance baseline
+- Recovery Services Vault backup design
+- Site-to-site VPN between Azure and Sophos Firewall
+- Terraform-based infrastructure deployment
+
+### Project Direction
+
+The project is now moving from a pure enterprise networking lab into a hybrid cloud and MSP-style healthcare infrastructure lab. The final direction is to demonstrate practical skills across:
+
+- Enterprise networking
+- MPLS L3VPN
+- Windows Server infrastructure
+- Active Directory
+- Azure hybrid cloud
+- Cloud monitoring
+- Infrastructure security
+- Backup and disaster recovery
+- MSP operations
+- Technical documentation
+- Business analysis deliverables
+
