@@ -21,10 +21,11 @@ The lab focuses on a realistic healthcare environment where clinical system avai
 | Estimated Lab RAM Usage | Around 38 GB |
 | Total Nodes | Around 22 devices |
 | Main Use Case | Multi-site healthcare enterprise network simulation |
-| Current Version | v1.0 MPLS Complete |
-| Last Updated | 28 April 2026 |
+| Current Version | v1.1 Azure Foundation + AD Complete |
+| Last Updated | 29 April 2026 |
+| Current Focus | Azure hybrid cloud foundation, MSP-style cloud operations, and server infrastructure completion |
 
----
+* * *
 
 ## Organisation Profile
 
@@ -89,17 +90,18 @@ The main objectives of this project are to:
 
 ## High-Level Architecture
 
-The lab is divided into five major layers:
+The lab is divided into six major layers:
 
 | Layer | Description |
 |---|---|
-| Cloud Layer | Azure VPN Gateway, Azure VNet, and future cloud-hosted healthcare services |
+| Azure Hybrid Cloud Layer | Azure foundation structure, hub VNet design, future site-to-site VPN, Log Analytics, Azure Monitor, Azure Policy, Azure Arc, backup, and MSP cloud operations |
 | Internet and ISP Layer | Internet uplink, NAT, ISP edge routing, and WAN handoff |
-| Data Centre Layer | Sophos firewall, redundant core switches, HSRP, servers, and monitoring |
+| Data Centre Layer | Sophos firewall, redundant core switches, HSRP, Active Directory, SQL Server, monitoring, and central network services |
 | MPLS Provider Core | PE and P routers running OSPF, MPLS LDP, and MP-BGP VPNv4 |
 | Branch Layer | Metro and remote clinic sites using CE routers, pfSense, access switches, and VLANs |
+| Monitoring and Security Layer | Wazuh, Splunk, syslog forwarding, security logs, Azure Monitor planning, and future hybrid monitoring integration |
 
----
+* * *
 
 ## Network Topology Summary
 
@@ -164,14 +166,24 @@ The MPLS core provides private WAN connectivity between the data centre, metro h
 - Wazuh
 - Splunk Enterprise
 
-### Cloud
+### Cloud and MSP Extension
 
-- Azure VPN Gateway
-- Azure VNet
-- Future FHIR API integration
+  * Azure Resource Group structure
+  * Azure Hub VNet design
+  * Azure subnet plan
+  * Azure NSG baseline
+  * Azure route table planning
+  * Azure Log Analytics Workspace planning
+  * Azure Monitor planning
+  * Azure Policy baseline planning
+  * Azure Arc server onboarding planning
+  * Azure Backup and DR planning
+  * Azure Lighthouse MSP model planning
+  * Terraform Infrastructure as Code structure
+  * Future Azure VPN Gateway integration
+  * Future Microsoft 365 and Intune integration
 
----
-
+* * *
 ## Device Inventory
 
 | Node | Device | Image | Zone |
@@ -665,7 +677,13 @@ ping vrf TNPH 10.0.6.2 source 10.0.6.1
 | TNPH-MET-CE01 | Configured, BGP Established |
 | TNPH-RUR-CE01 | Configured, BGP Established |
 | MPLS L3VPN | End-to-end routing verified |
-| TNPH-DC-AD01 | Windows setup in progress |
+| TNPH-DC-AD01 | Completed — Active Directory Domain Services configured |
+| Azure project structure | Completed — cloud/ folder and Azure documentation structure added |
+| Azure Terraform structure | Created, pending implementation |
+| Azure Policy structure | Created, pending policy content |
+| Azure Monitor / Log Analytics structure | Created, pending deployment |
+| Azure VPN Gateway | Planned, not deployed yet to control student subscription cost |
+| Azure Arc | Planned |
 | TNPH-DC-SQL01 | Pending |
 | TNPH-DC-MON01 | Docker stack pending |
 | TNPH-MET-PFS01 | Pending |
@@ -674,7 +692,7 @@ ping vrf TNPH 10.0.6.2 source 10.0.6.1
 | TNPH-RUR-ASW01 | Pending |
 | Endpoints | Pending |
 
----
+* * *
 
 ## Business Analysis Artefacts
 
@@ -712,75 +730,122 @@ ping vrf TNPH 10.0.6.2 source 10.0.6.1
 
 ### Phase 1 — Core Network
 
-- Build ISP and data centre connectivity
-- Configure Sophos firewall
-- Configure data centre core switches
-- Configure HSRP
-- Configure MPLS provider core
-- Configure CE to PE BGP
-- Verify MPLS L3VPN routing
+Status: Completed
 
-### Phase 2 — Branch Security
+  * Build ISP and data centre connectivity
+  * Configure Sophos firewall
+  * Configure data centre core switches
+  * Configure HSRP
+  * Configure MPLS provider core
+  * Configure CE to PE BGP
+  * Verify MPLS L3VPN routing
 
-- Configure Metro pfSense
-- Configure Remote Clinic pfSense
-- Configure Metro access switch
-- Configure Remote Clinic access switch
-- Implement VLAN segmentation
-- Test branch-to-data-centre access
+### Phase 2 — Server Infrastructure
 
-### Phase 3 — Server Infrastructure
+Status: In progress
 
-- Configure Active Directory
-- Configure DNS and DHCP
-- Configure SQL Server
-- Join endpoints to the domain
-- Validate access to clinical applications
+  * Configure Active Directory — completed
+  * Validate AD DNS functionality
+  * Configure DHCP if required
+  * Configure SQL Server
+  * Join endpoints to the domain
+  * Validate access to clinical applications
 
-### Phase 4 — Monitoring
+### Phase 3 — Azure Foundation
 
-- Deploy Docker on MON01
-- Deploy Wazuh
-- Deploy Splunk
-- Forward syslog from network devices
-- Install Wazuh agents
-- Build dashboards and alerts
+Status: Structure created, implementation pending
 
-### Phase 5 — Testing and Documentation
+  * Add cloud/ Azure project structure — completed
+  * Add Terraform folder structure — completed
+  * Add Azure policy folder structure — completed
+  * Add Azure monitoring folder structure — completed
+  * Create Azure Resource Group
+  * Create Azure Hub VNet and subnets
+  * Create NSGs and route tables
+  * Create Log Analytics Workspace
+  * Add Azure Policy baseline
+  * Document student subscription cost-control approach
 
-- Complete connectivity matrix
-- Complete BGP verification
-- Complete MPLS verification
-- Complete HSRP failover testing
-- Complete VLAN isolation testing
-- Complete attack simulation testing
-- Finalise runbook and handover documentation
+### Phase 4 — Branch Security
 
----
+Status: Pending
+
+  * Configure Metro pfSense
+  * Configure Remote Clinic pfSense
+  * Configure Metro access switch
+  * Configure Remote Clinic access switch
+  * Implement VLAN segmentation
+  * Test branch-to-data-centre access
+
+### Phase 5 — Hybrid Cloud Integration
+
+Status: Planned
+
+  * Configure Azure site-to-site VPN design
+  * Deploy Azure VPN Gateway only during short validation windows
+  * Connect Azure Hub VNet to Sophos firewall
+  * Validate on-premises to Azure routing
+  * Onboard selected servers to Azure Arc
+  * Integrate Azure Monitor and Log Analytics
+
+### Phase 6 — Monitoring
+
+Status: Pending
+
+  * Deploy Docker on MON01
+  * Deploy Wazuh
+  * Deploy Splunk
+  * Forward syslog from network devices
+  * Install Wazuh agents
+  * Build dashboards and alerts
+  * Add Azure Monitor queries and alerts
+
+### Phase 7 — Testing and Documentation
+
+Status: Ongoing
+
+  * Complete connectivity matrix
+  * Complete BGP verification
+  * Complete MPLS verification
+  * Complete HSRP failover testing
+  * Complete VLAN isolation testing
+  * Complete AD validation screenshots
+  * Complete Azure foundation screenshots
+  * Complete attack simulation testing
+  * Finalise runbook and handover documentation
+
+* * *
 
 ## Skills Demonstrated
 
 This project demonstrates practical skills in:
 
-- Enterprise network design
-- Cisco routing and switching
-- BGP and MPLS
-- VRF and L3VPN
-- OSPF and LDP
-- HSRP and gateway redundancy
-- Firewall placement and segmentation
-- pfSense and Sophos firewall design
-- Windows Server infrastructure
-- Docker deployment
-- Wazuh SIEM
-- Splunk log analysis
-- Technical documentation
-- Business Analysis documentation
-- Testing and verification
-- Troubleshooting
-- GitHub project organisation
+  * Enterprise network design
+  * Cisco routing and switching
+  * BGP and MPLS
+  * VRF and L3VPN
+  * OSPF and LDP
+  * HSRP and gateway redundancy
+  * Firewall placement and segmentation
+  * pfSense and Sophos firewall design
+  * Windows Server infrastructure
+  * Active Directory Domain Services
+  * Azure hybrid cloud planning
+  * Azure networking foundation
+  * Azure governance and policy planning
+  * Azure Monitor and Log Analytics planning
+  * Terraform project structure
+  * MSP-style cloud operations planning
+  * Docker deployment
+  * Wazuh SIEM
+  * Splunk log analysis
+  * Technical documentation
+  * Business Analysis documentation
+  * Testing and verification
+  * Troubleshooting
+  * GitHub project organisation
 
----
+* * *
 
 ## Security Note
 
